@@ -31,6 +31,8 @@ var markers=[];
 var markerGroup;
 
 $("#divcustomersform").hide();
+$("#divrawdata").hide();
+
 
 //localStorage.setItem("tbClients", JSON.stringify([])); 
 
@@ -77,9 +79,7 @@ var app = {
 				.setContent("<button type='button' onclick=\"addcustomer('" + position + "' );\">Agregar Cliente</button>")
 				.openOn(map);
 		}
-
-		map.on('click', onMapClick);
-		
+		map.on('click', onMapClick);		
     },
     // Bind Event Listeners
     //
@@ -223,6 +223,22 @@ function GotoMap(index){
 		}
 	}
 } 
+
+function rawbackup(){
+//
+	$("#tarawdata").text( JSON.stringify( tbClients ) );
+	$("#divrawdata").show();
+	$("#divmap").hide();
+	$("#divcustomerslist").hide();
+	$("#divcustomersform").hide();
+}
+function rawbackupClose(){
+//
+	$("#divrawdata").hide();
+	$("#divmap").show();
+	$("#divcustomerslist").show();
+	$("#divcustomersform").hide();
+}
 
 
 function List(){	

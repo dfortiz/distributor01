@@ -56,9 +56,8 @@
             </div>
         </div>
 
-         <div id="divcustomersform" >            
-            <p> REGISTRO </p>
-             
+         <div id="divcustomersform" style="visibility: hidden;" >            
+            <p> REGISTRO </p>             
              <form id="contact" method="post" action=""> 
              <fieldset>     
                  <label for="name">Cliente</label> 
@@ -75,10 +74,16 @@
              </fieldset> 
              </form>
 
-            </div>
+        </div>
 
-             <p>Frank Ortiz @ 2017</p>
+         <div id="divrawdata" style="visibility: hidden;">            
+            <p> RAWDATA </p>             
+             <textarea id="tarawdata"></textarea>
+            <input type="button" value="Ok" onclick="rawbackupClose();" /> 
 
+        </div>
+
+        <p>Frank Ortiz @ 2017 @ <a href=# onclick='rawbackup();' > Raw Backup </a></p>
 
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
