@@ -26,8 +26,9 @@ if(tbClients == null) //If there is no data, initialize an empty array
 List();
 var positiongps;
 
+var map;
 var markers=[];
-
+var markerGroup;
 
 $("#divcustomersform").hide();
 
@@ -44,8 +45,9 @@ var app = {
 		app.resizeMap();
 		
 		//var map = L.map('map-canvas').setView([45.423, -75.679], 13);
-		var map = L.map('map-canvas').setView([-17.112700, -63.232997], 13);
+		map = L.map('map-canvas').setView([-17.112700, -63.232997], 13);
 		
+		markerGroup = L.layerGroup().addTo(map);
 		//this works, but is online: Mineros -17.112700, -63.232997
 		/*
 		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -60,20 +62,8 @@ var app = {
 
 
 		//L.marker([-17.112700, -63.232997]).addTo(map).bindPopup("<b>MINERO</b><br /> :) ").openPopup();
+		refreshMapMarkers();
 
-		for(var i in tbClients){ 
-		var cli = JSON.parse(tbClients[i]); 
-			var posarray = cli.Gps.split(";");
-			//L.marker([posarray[0], posarray[1]]).addTo(map).bindPopup("<b>" + cli.Name + "</b> <br />  "  + cli.Phone + "<br />  "  + cli.Email);
-
-
-			var LamMarker = new L.marker([posarray[0], posarray[1]]);
-			LamMarker.bindPopup("<b>" + cli.Name + "</b> <br />  "  + cli.Phone + "<br />  "  + cli.Email);
-			LamMarker.dbindex = i;
-			markers.push(LamMarker);
-			map.addLayer(markers[i]);
-
-		}
 
 		var popup = L.popup();
 
@@ -118,10 +108,28 @@ var app = {
     },
 	resizeMap: function() {
 		 $("#map-canvas").height(Math.max(100,$(window).height()-90));// TODO set 
-	}
-	
-	
+	}	
 };
+
+function refreshMapMarkers() {
+	markers = [];
+	markerGroup.clearLayers();
+	/*for(var i = 0; i < this.mapMarkers.length; i++){
+	    map.removeLayer(this.mapMarkers[i]);
+	}*/
+
+	for (var i in tbClients) { 
+		var cli = JSON.parse(tbClients[i]); 
+		var posarray = cli.Gps.split(";");
+		//L.marker([posarray[0], posarray[1]]).addTo(map).bindPopup("<b>" + cli.Name + "</b> <br />  "  + cli.Phone + "<br />  "  + cli.Email);
+		var LamMarker = new L.marker([posarray[0], posarray[1]]);
+		LamMarker.bindPopup("<b>" + cli.Name + "</b> <br />  "  + cli.Phone + "<br />  "  + cli.Email);
+		LamMarker.dbindex = i;
+		markers.push(LamMarker);
+		LamMarker.addTo(markerGroup);
+		//map.addLayer(markers[i]);
+	}
+}
 
 function addcustomer( position  ) { // LatLng(-17.12102, -63.22761)	
 
@@ -134,7 +142,7 @@ function addcustomer( position  ) { // LatLng(-17.12102, -63.22761)
 	$("#divmap").hide();
 	$("#divcustomerslist").hide();
 	$("#divcustomersform").show();
-
+	
 }
 
 $(window).resize(function() {
@@ -163,7 +171,8 @@ function Add(){
 	$("#divcustomersform").hide();
 
 	List();
-
+	refreshMapMarkers();
+	map.closePopup();
 	return true; 
 }
 
@@ -179,6 +188,8 @@ function Cancel(){
 	$("#divcustomersform").hide();
 
 	List();
+	refreshMapMarkers();
+	map.closePopup();
 	return true; 
 }
 
@@ -199,6 +210,7 @@ function Delete(index){
 	localStorage.setItem("tbClients", JSON.stringify(tbClients)); 
 	alert("Cliente borrado."); 
 	List();
+	refreshMapMarkers();
 } 
 
 function GotoMap(index){ 
