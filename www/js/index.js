@@ -234,10 +234,20 @@ function rawbackup(){
 }
 function rawbackupClose(){
 //
+	//localStorage.setItem("tbClients", JSON.stringify(tbClients)); 
 	$("#divrawdata").hide();
 	$("#divmap").show();
 	$("#divcustomerslist").show();
 	$("#divcustomersform").hide();
+}
+
+function rawbackupSet(){
+//
+	tbClients = JSON.parse(  $("#tarawdata").val()  );
+	console.log( tbClients );
+	//localStorage.setItem("tbClients", $("#tarawdata").text() ); 
+	localStorage.setItem("tbClients", JSON.stringify(tbClients)); 
+	rawbackupClose();
 }
 
 
